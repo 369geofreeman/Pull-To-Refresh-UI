@@ -1,37 +1,60 @@
-import React, { useRef } from "react";
-import { StyleSheet, Dimensions, View, Button } from "react-native";
-import LottieView from "lottie-react-native";
-
-const { windowWidth, windowHeight } = Dimensions.get("window");
+import React, { useState, useEffect } from "react";
+import {
+  StyleSheet,
+  SafeAreaView,
+  Text,
+  View,
+  FlatList,
+  RefreshControl,
+} from "react-native";
+import { DATA } from "../assets/DATA";
+import Card from "./Card";
+import Camera from "./Camera";
 
 export default function Main() {
-  const camera = useRef(null);
+  const [loading, setLoading] = useState(false);
+  const renderItem = ({ item }) => <Card title={item.title} />;
 
-  const toggleCamera = () => {
-    camera.current.play(45, 98);
+  const pushNewCards = async () => {
+    DATA.unshift({
+      id: Math.random().toString(),
+      title: "FUCK YEAH BOIIIII",
+    });
+  };
+
+  const onRefresh = async () => {
+    setLoading(true);
+    setTimeout(() => {
+      pushNewCards();
+      setLoading(false);
+    }, 3000);
   };
 
   return (
-    <View>
-      <LottieView
-        source={require("../assets/img/camera3.json")}
-        ref={camera}
-        // style={styles.lottieContainer}
-        height={200}
-        width={200}
-        loop={false}
-        autoPlay={false}
+    <SafeAreaView style={styles.container}>
+      {loading && <Camera />}
+      <FlatList
+        style={{ backgroundColor: "transparent" }}
+        data={DATA}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+        refreshControl={
+          <RefreshControl
+            onLayout={(e) => console.log(e.nativeEvent)}
+            tintColor="transparent"
+            colors={["transparent"]}
+            style={{ backgroundColor: "transparent" }}
+            refreshing={loading}
+            onRefresh={onRefresh}
+          />
+        }
       />
-      <Button onPress={toggleCamera} title="Press Me" />
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  lottieContainer: {
-    width: windowWidth * 0.98,
-    height: windowWidth * 0.98,
-    backgroundColor: "transparent",
-    position: "absolute",
+  container: {
+    flex: 1,
   },
 });
