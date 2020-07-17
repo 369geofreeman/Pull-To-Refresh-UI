@@ -1,11 +1,20 @@
 import React from "react";
-import { StyleSheet, Text, View, Dimensions } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+  Animated,
+  Easing,
+} from "react-native";
 
 const { height, width } = Dimensions.get("window");
 
-export default function Card({ title }) {
+export default function Card({ title, fadeIn }) {
+  const animationCard = new Animated.Value(0);
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { opacity: fadeIn ? 0 : 1 }]}>
       <Text>C a r d</Text>
       <Text>{title}</Text>
     </View>

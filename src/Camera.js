@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   lottieContainer: {
     position: "absolute",
     top: 0,
-    left: 0,
+    left: width * 0.06,
     right: 0,
     flex: 1,
   },

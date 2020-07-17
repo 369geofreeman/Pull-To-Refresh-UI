@@ -7,6 +7,8 @@ import Main from "./src/Main";
 export default function App() {
   return (
     <View style={styles.container}>
+      <StatusBar />
+
       <Main />
     </View>
   );
