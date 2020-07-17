@@ -16,8 +16,8 @@ const { height, width } = Dimensions.get("window");
 export default function Main() {
   const [data, setData] = useState(DATA);
   const [loading, setLoading] = useState(false);
-  const [newCards, setNewCards] = useState([]);
   const newCard = { id: Math.random().toString(), title: "Heck YEAH BOIIIII" };
+  const [newCards, setNewCards] = useState([]);
 
   const renderItem = ({ item }) =>
     item === data[0] ? (
@@ -33,14 +33,12 @@ export default function Main() {
   const onRefresh = async () => {
     await setLoading(true);
     await data.unshift(newCard);
-    newCards.push(newCard);
+    setNewCards([...newCards, newCard]);
     setTimeout(() => {
       resetDeck();
       setLoading(false);
     }, 3000);
   };
-
-  // FInd a way to show card animating... or even at all while the setRTiimeourt is on
 
   return (
     <SafeAreaView style={styles.container}>

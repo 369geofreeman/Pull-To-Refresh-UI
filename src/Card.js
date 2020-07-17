@@ -29,5 +29,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginVertical: height * 0.03,
     borderWidth: StyleSheet.hairlineWidth,
+    // backgroundColor: "blue",
   },
 });
