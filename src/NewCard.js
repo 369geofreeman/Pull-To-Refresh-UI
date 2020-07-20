@@ -18,7 +18,7 @@ export default function NewCard({ title, img }) {
     Animated.timing(cardAnimation, {
       toValue: 1,
       duration: animationDuration,
-      easing: Easing.elastic(1, 5),
+      easing: Easing.elastic(1, 9),
       delay: animationDelay,
       useNativeDriver: false,
     }).start();

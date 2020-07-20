@@ -5,6 +5,8 @@ import {
   Dimensions,
   FlatList,
   RefreshControl,
+  Animated,
+  Easing,
 } from "react-native";
 import { DATA } from "../assets/DATA";
 import Card from "./Card";
@@ -16,12 +18,19 @@ const { height, width } = Dimensions.get("window");
 export default function Main() {
   const [data, setData] = useState(DATA);
   const [loading, setLoading] = useState(false);
+  const animateFlatlist = new Animated.Value(0);
+  const animateFlatlistBack = new Animated.Value(0);
   const newCard = {
     id: Math.random().toString(),
-    title: "Heck YEAH BOIIIII",
     img: require("../assets/img/card0.jpeg"),
   };
   const [newCards, setNewCards] = useState([]);
+
+  useEffect(() => {
+    if (loading) {
+      animateBack();
+    }
+  });
 
   const renderItem = ({ item }) =>
     item === data[0] ? (
@@ -34,15 +43,46 @@ export default function Main() {
     setNewCards([]);
   };
 
+  const animate = () => {
+    Animated.timing(animateFlatlist, {
+      toValue: 1,
+      duration: 500,
+      easing: Easing.inOut,
+      useNativeDriver: false,
+    }).start();
+  };
+
+  const animateBack = () => {
+    animateFlatlistBack.setValue(0);
+    Animated.timing(animateFlatlistBack, {
+      toValue: 1,
+      duration: 500,
+      delay: 2200,
+      easing: Easing.elastic(1, 4),
+      useNativeDriver: false,
+    }).start();
+  };
+
   const onRefresh = async () => {
     await setLoading(true);
     await data.unshift(newCard);
     setNewCards([...newCards, newCard]);
+    animate();
     setTimeout(() => {
       resetDeck();
       setLoading(false);
     }, 3000);
   };
+
+  let animateRow = animateFlatlist.interpolate({
+    inputRange: [0, 1],
+    outputRange: [-400, 0],
+  });
+
+  let scaleTop = animateFlatlistBack.interpolate({
+    inputRange: [0, 1],
+    outputRange: [1, height * 0.36],
+  });
 
   return (
     <SafeAreaView style={styles.container}>
@@ -50,22 +90,25 @@ export default function Main() {
       {newCards.map((card) => (
         <NewCard key={card.id} title={card.title} img={card.img} />
       ))}
-      <FlatList
-        style={{ backgroundColor: "transparent", marginTop: -50 }}
-        data={data}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        refreshControl={
-          <RefreshControl
-            onLayout={(e) => console.log(e.nativeEvent)}
-            tintColor="transparent"
-            colors={["transparent"]}
-            style={{ backgroundColor: "transparent", height: height * 0.13 }}
-            refreshing={loading}
-            onRefresh={onRefresh}
-          />
-        }
-      />
+      <Animated.View style={{ height: 75, marginTop: scaleTop }} />
+      <Animated.View style={{ marginTop: loading && animateRow }}>
+        <FlatList
+          style={{ backgroundColor: "transparent" }}
+          data={data}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+          refreshControl={
+            <RefreshControl
+              onLayout={(e) => console.log(e.nativeEvent)}
+              tintColor="transparent"
+              colors={["transparent"]}
+              style={{ backgroundColor: "transparent", height: height * 0.13 }}
+              refreshing={loading}
+              onRefresh={onRefresh}
+            />
+          }
+        />
+      </Animated.View>
     </SafeAreaView>
   );
 }

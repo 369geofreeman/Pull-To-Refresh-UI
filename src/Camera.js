@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   outerContainer: {
     justifyContent: "center",
     alignItems: "center",
-    right: width * 0.19,
+    right: width * 0.21,
   },
   container: {
     position: "absolute",
