@@ -3,7 +3,6 @@ import {
   StyleSheet,
   SafeAreaView,
   Dimensions,
-  View,
   FlatList,
   RefreshControl,
 } from "react-native";
@@ -49,10 +48,10 @@ export default function Main() {
     <SafeAreaView style={styles.container}>
       {loading ? <Camera /> : <CameraStill />}
       {newCards.map((card) => (
-        <NewCard key={card.id} title={card.title} />
+        <NewCard key={card.id} title={card.title} img={card.img} />
       ))}
       <FlatList
-        style={{ backgroundColor: "transparent" }}
+        style={{ backgroundColor: "transparent", marginTop: -50 }}
         data={data}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}

@@ -1,7 +1,5 @@
 # Pull-To-Refresh-UI
 
-## To do
+UI experiment: Loading new data from a flatlist + pull to refesh.
 
-- Animate camera marginTop after photo taken
-- Camera to lose photo after card animation starts (use seperate camera)
-- add styles and card design
+Based on this shot: https://dribbble.com/shots/3031884-Pull-to-Refresh-Printer
