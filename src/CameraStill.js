@@ -1,18 +1,17 @@
-import React, { useEffect, useRef } from "react";
-import { StyleSheet, Dimensions, View } from "react-native";
+import React, { useRef, useEffect } from "react";
+import { StyleSheet, View, Dimensions } from "react-native";
 import LottieView from "lottie-react-native";
-
 const { height, width } = Dimensions.get("window");
 
-export default function Camera() {
+export default function CameraStill() {
   const cameraRef = useRef(null);
 
   useEffect(() => {
-    cameraRef.current.play(25, 90);
+    cameraRef.current.play(30, 35);
   }, []);
 
   return (
-    <View style={[styles.outerContainer]}>
+    <View style={styles.outerContainer}>
       <View style={styles.container}>
         <LottieView
           source={require("../assets/img/camera3.json")}
